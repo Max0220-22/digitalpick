@@ -2,9 +2,13 @@
 
 不买最贵的，只买最适合的。
 
+**正式网站：[打开 DigitalPick](https://max0220-22.github.io/digitalpick/)**
+
+已部署 GitHub Pages + Cloudflare Worker。详细上线记录与维护命令见源码包内 `docs/GITHUB-LIVE.md`。
+
 中文数码购买决策网站，保留流动星河、3D小派、产品库、规则问答、验机清单与安全DeepSeek代理。
 
-完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共187个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
+完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共190个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
 
 ## 本地运行
 
