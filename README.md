@@ -8,7 +8,7 @@
 
 中文数码购买决策网站，保留流动星河、3D小派、产品库、规则问答、验机清单与安全DeepSeek代理。
 
-完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共201个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
+完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共220个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
 
 ## 本地运行
 
@@ -25,10 +25,14 @@ npm run dev
 
 - 前端：GitHub Pages，仓库Settings → Pages选择GitHub Actions。
 - AI：Cloudflare Pages入口经内部绑定连接Worker与SQLite Durable Object；Key只放Worker Secret。
-- 仓库Actions Variable AI_PROXY_URL仅填写Worker公开HTTPS地址。
+- 仓库Actions Variable AI_PROXY_URL仅填写已部署的Pages网关公开HTTPS地址。
 - 免费托管额度不包含DeepSeek模型调用费。所有数字示例价格仍是演示数据。
 - 不要把任何API Key添加到NEXT_PUBLIC变量或提交到仓库。
 
 更新网站：修改本地完整源码，运行测试后重新生成并上传digitalpick-source.zip，Actions会重新发布。不要把本地localhost预览产物直接上传到公网。
 
 桌面/手机连接异常时打开 [连接与3D自检](https://max0220-22.github.io/digitalpick/diagnostics/)，仅检查免费会话和本地3D状态，不调用模型。
+
+## 参数资料与小派升级
+
+[打开参数素材库](https://max0220-22.github.io/digitalpick/library/)：37条已核对字段资料、1,775条待核验配置。待核验资料不进入AI上下文或推荐。支持中文机型简称、简短追问和地区配置区分。92项测试通过；来源、许可证和覆盖缺口见源码内docs/DEVICE-LIBRARY.md。没有宣称覆盖近五年全部品牌与配置。
