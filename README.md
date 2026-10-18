@@ -8,7 +8,7 @@
 
 中文数码购买决策网站，保留流动星河、3D小派、产品库、规则问答、验机清单与安全DeepSeek代理。
 
-完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共231个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
+完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共234个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
 
 ## 本地运行
 
@@ -37,6 +37,12 @@ npm run dev
 
 [打开平板产品库](https://max0220-22.github.io/digitalpick/products/?category=tablet) · [清单逐项核验](https://max0220-22.github.io/digitalpick/products/coverage/)
 
-产品库490条型号/地区版本：手机339、平板90、笔记本61。用户清单520项逐项核验：445确认、18纠正、57暂未确认；不把未确认名称编成已发布产品。部分记录只核对型号，未整理参数保持为空，不宣称所有字段完整。
+产品库492条型号/地区版本：手机339、平板90、笔记本63。用户清单520项逐项核验：446确认、18纠正、56暂未确认；不把未确认名称编成已发布产品。部分记录只核对型号，未整理参数保持为空，不宣称所有字段完整。
 
-支持品牌、代际、中文型号搜索和分页。缺报价不隐藏设备，新记录没有虚构价格、图片或评分。98项测试、前端/Worker类型检查及静态构建通过；来源与维护说明见源码内docs/CATALOG-EXPANSION.md。
+支持品牌、代际、中文型号搜索和分页。缺报价不隐藏设备，新记录没有虚构价格、图片或评分。103项测试、前端/Worker类型检查及静态构建通过；来源与维护说明见源码内docs/CATALOG-EXPANSION.md。
+
+## Detailed specifications — 2026-10-18
+
+237 product records updated; 1,936 specification fields added and 176 refined. Identity-only records reduced from 169 to 18. Regional variants, Pro+ models and configuration bindings remain distinct. Official source links are included in product details and the AI context. No new prices, images or benchmarks.
+
+Validation: 103 tests, frontend/Worker TypeScript, 516 static HTML pages and 20,286 local references; mobile layout checked at 390px. Reports and remaining gaps: docs/SPEC-ENRICHMENT.md and docs/spec-enrichment-report.json inside the source archive.
