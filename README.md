@@ -8,7 +8,7 @@
 
 中文数码购买决策网站，保留流动星河、3D小派、产品库、规则问答、验机清单与安全DeepSeek代理。
 
-完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共234个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
+完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共237个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
 
 ## 本地运行
 
@@ -46,3 +46,9 @@ npm run dev
 237 product records updated; 1,936 specification fields added and 176 refined. Identity-only records reduced from 169 to 18. Regional variants, Pro+ models and configuration bindings remain distinct. Official source links are included in product details and the AI context. No new prices, images or benchmarks.
 
 Validation: 103 tests, frontend/Worker TypeScript, 516 static HTML pages and 20,286 local references; mobile layout checked at 390px. Reports and remaining gaps: docs/SPEC-ENRICHMENT.md and docs/spec-enrichment-report.json inside the source archive.
+
+## 官方产品图片 — 2026-10-19
+
+新增402条设备的官方主图，共覆盖426/492条型号及地区版本：手机307、平板75、笔记本44。产品卡片、详情页与参数素材库均展示图片及原始出处。剔除促销横幅、过小导航图、线框图和型号不符图片；其余66条保留明确占位。图片通过品牌官方CDN远程引用，品牌保留版权，不在源码包内再分发。
+
+验证：105项测试、前端与Worker类型检查、516个静态HTML与21609条本地引用全部通过；390px手机布局及图片加载检查通过。来源、图片尺寸和完整缺口见源码内docs/MEDIA-EXPANSION.md、docs/official-media-report.json。本轮未调用付费模型。
