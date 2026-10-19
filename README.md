@@ -8,7 +8,7 @@
 
 中文数码购买决策网站，保留流动星河、3D小派、产品库、规则问答、验机清单与安全DeepSeek代理。
 
-完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共245个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
+完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共251个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
 
 ## 本地运行
 
@@ -62,3 +62,13 @@ Validation: 103 tests, frontend/Worker TypeScript, 516 static HTML pages and 20,
 [查看价格方法与覆盖](https://max0220-22.github.io/digitalpick/pricing/) · [官网价格与发售价示例](https://max0220-22.github.io/digitalpick/products/ipad-air-11-m4/) · [旧款与二手估算示例](https://max0220-22.github.io/digitalpick/products/iphone-13/)
 
 验证：112项测试、前端/Worker类型检查、517个静态HTML、23321条本地引用，390px手机排版检查通过。来源、计算方法和逐项缺口见源码内docs/PRICE-RESEARCH.md与docs/price-research-report.json。本轮未调用付费模型。
+
+## 编码、图片过渡与小派参考推荐 — 2026-10-19
+
+保留已确认的缺图占位文案。“暂未估算”采用完整Unicode常量，增加REDMI Book 16 2026（125H/1860g）卡片回归；源码和静态输出严格检查UTF-8、BOM与意外替换字符。修改前在Safari未复现该卡片乱码，没有把猜测写成已确认根因。
+
+图片保留懒加载与原失败处理，新增骨架与模糊渐显；首页机型、分类、详情视图、素材库标签及下一页支持意图预加载，每次最多3图、总计32个地址去重，省流量及2G关闭预加载。
+
+小派先给有来源的“核价备选”，明确非实时价格、购买前核实，再追问用途或全新/二手。参考池不等于通过当前购买报价审核，预算资格仍为false，不保证库存或预算内可买。虚构金额、未知ID与库存承诺仍被拦截，不改动硬预算规则推荐器。
+
+验证：119项离线测试、前端/Worker类型检查、517个静态HTML、23321条本地引用及2637份导出文本编码检查。手机390px验证图片先骨架后就绪，lazy属性保留。细节见源码内docs/UX-IMPROVEMENTS.md。
