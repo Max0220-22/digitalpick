@@ -1,14 +1,14 @@
-# DigitalPick 数码指南
+# 未域 ELVORA 数码指南
 
 不买最贵的，只买最适合的。
 
-**正式网站：[打开 DigitalPick](https://max0220-22.github.io/digitalpick/)**
+**正式网站：[打开 未域 ELVORA](https://max0220-22.github.io/digitalpick/)**
 
 已部署 GitHub Pages + Cloudflare Worker。详细上线记录与维护命令见源码包内 `docs/GITHUB-LIVE.md`。
 
 中文数码购买决策网站，保留流动星河、3D小派、产品库、规则问答、验机清单与安全DeepSeek代理。
 
-完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共277个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
+完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共281个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
 
 ## 本地运行
 
@@ -107,3 +107,11 @@ Validation: 103 tests, frontend/Worker TypeScript, 516 static HTML pages and 20,
 同一条 1.6 秒时间轴编排屏息、天空溶解、方向光和界面配色；统一曝光衔接消除提前入夜的割裂感。日间增加太阳圆盘、轻光柱、两层高云、40 粒微尘、远山和 26 秒轨道光点；移动端微尘减半、保留一层云。夜间保留星河，并以 120px 渐隐处理 Hero 底部。
 
 155 项测试、类型检查、520 页静态导出及 2654 份导出文本编码检查通过。浏览器验证四轮往返、模型不重建、390px 布局、2D 反馈、主题刷新保存和路由返回。所有持续氛围动画使用 rAF；不可见/减少动态时暂停。本机性能观察不代表所有设备的帧率保证。实现与验证边界见 `docs/DAY-NIGHT.md`。
+
+## 本轮更新
+
+品牌升级为未域 ELVORA；太阳实体圆盘、日夜同步过渡、完整 Hero 星河；问卷和小派推荐新增单闲鱼核价入口。既有网址与部署配置保持不变。
+
+未域相信，每个人都值得一台“刚好适合”的设备，而不是一台“别人说好”的设备。
+
+Not the priciest. Just the right one.
