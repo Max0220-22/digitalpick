@@ -1,79 +1,166 @@
 # 未域 ELVORA 数码指南
 
-不买最贵的，只买最适合的。
+**不买最贵的，只买最适合的。**
 
-**正式网站：[打开 未域 ELVORA](https://max0220-22.github.io/digitalpick/)**
+一个可运行的中文数码购买决策网站。Next.js App Router + TypeScript + Tailwind CSS 4 + Radix / CVA 基础组件 + Lucide + Three.js。基础功能无需账号或付费 API；小派可选择接入服务端 deepseek-flash。
 
-已部署 GitHub Pages + Cloudflare Worker。详细上线记录与维护命令见源码包内 `docs/GITHUB-LIVE.md`。
+## 显示与参考推荐改进（2026-10-19）
 
-中文数码购买决策网站，保留流动星河、3D小派、产品库、规则问答、验机清单与安全DeepSeek代理。
+保留已确认的占位文案；“暂未估算”采用完整Unicode常量并新增REDMI Book 16 2026回归。构建前后严格检查UTF-8、BOM和意外替换字符。图片保留懒加载，增加骨架/渐显和分类、视图、下一页的意图预加载，弱网/省流量不提前拉图。
 
-完整源码保存在 [digitalpick-source.zip](digitalpick-source.zip)，共281个项目文件，包含目录结构、测试和部署说明，不含密钥、环境文件、数据库、依赖或构建缓存。仓库通过GitHub网页上传，GitHub Actions自动解压源码后构建和发布。
+小派允许根据资料库给出“核价备选”，明确非实时价格、购买前核实，再追问用途与全新/二手偏好。参考池与硬预算购买池独立，不将估算或历史价伪装成当前可购买报价。120项测试；实现与边界见 [本轮说明](docs/UX-IMPROVEMENTS.md)。
+
+## 官方参考价、发售价与二手估算（2026-10-19）
+
+492条型号/地区记录中，266条至少有一种已核对价格信息：74条官网参考价、152条历史发售参考、65条官方建议零售价，三者有重叠。另有135条透明折旧模型情景估算，零平台成交样本、低置信度，不代表市场报价。仍有226条没有足够依据填入数字，保持为空；不把未查到现价视为下架。详见 [价格来源与完整缺口](docs/PRICE-RESEARCH.md) 和网站 `/pricing/`。
+
+价格单独标明中国大陆地区、基础配置、来源和核对日期；可能与参数页的地区/容量不同。历史价、建议价和估算不进入当前硬预算推荐或真实差价计算。公开产品移除早期虚构演示价格，合成报价仅保留在测试夹具中。
+
+## 官方产品图片补充（2026-10-19）
+
+426/492条型号与地区记录已配有官方主图，本轮新增402条：手机307、平板75、笔记本44。图片接入产品列表、详情和参数素材库，保留原始页面与版权状态，失败时显示占位。图片均为远程官方引用，不生成设备、不导入售价/优惠/库存。仍有66条缺图，详见 [图片来源与缺口](docs/MEDIA-EXPANSION.md)。
+
+## 详细参数补充（2026-10-18）
+
+当前492条正式型号/地区版本，237条本轮资料更新，新增1936个参数字段、补强176个字段；仅型号记录从169降至18。平板90条保持，手机339条、笔记本63条。小派与详情共用已核对参数，Pro+、地区和SKU绑定保留；仍有空字段，未宣称全参数已完成。详见 [详细记录与缺口](docs/SPEC-ENRICHMENT.md)。
+
+## 小派对话修复（2026-10-17）
+
+- 修复“预算2000，打游戏 → 王者荣耀”被当成新话题的问题；游戏名、预算、购买方式可连续补充，手机方向的推断会标明假设。
+- 追问一次只保留一项，已知预算和游戏不重复询问。“可以 / 不接受 / 2000”结合上一问解析。
+- 正文开头可复述数值一致的已确认预算；商品售价、任意链接和未知推荐仍拦截。完整 JSON 围栏可恢复。
+- 模型输出不合规时明确转为“本地整理”，接续既有条件，不伪装成模型回复、不自动产生第二次付费请求。
+- 本轮74项测试、两种构建与模拟浏览器回归通过；未训练模型、未调用付费推理。详见 [对话质量说明](docs/CONVERSATION.md)。
+
+## 免费部署已适配
+
+优先方案为 **GitHub Pages 静态前端 + Cloudflare Worker AI 代理 + SQLite Durable Object 持久额度**。星河、小派、聊天和所有页面保留，原 Node 运行方式也保留。部署入口：[完整免费部署步骤](docs/FREE-DEPLOYMENT.md)。
+
+- `npm run build:pages` 独立生成 `out-pages/`，支持仓库子路径；GitHub Actions 自动构建发布。
+- 密钥只放 Cloudflare Secrets；浏览器仅接收公开代理地址与一天有效的匿名签名会话。
+- 全站 / 会话 / IP 频率、每日次数和 token 预留、输入长度、超时与错误处理已实现。
+- **托管可使用免费额度，DeepSeek 仍按实际调用收费。此前分享过的 Key 必须先撤销轮换。**
+- GitHub Pages与安全Worker已经部署；本轮未调用付费模型。密钥与历史检查边界见 [安全检查](docs/SECURITY-AUDIT.md)。
+
+## 既有推荐与界面功能
+
+- 推荐规则 v2：每项用途先过适配门槛，再按主用途排序；加入完整预算预留、全新 / 二手分别评估和省心 / 均衡 / 低价取舍。结果可展开评分、购买方案与未入选原因。
+- 新增 `/methodology/` 推荐方法与研究来源页。核验 10 条 MKBHD 视频的公开简介 / 章节及 6 条社交帖正文，明确记录已读范围、年份、地区与证据限制。Google / X 访问受限，未声称找到全网最高赞内容。
+- 小派使用同一推荐规则筛选正式候选，并读取有来源边界的编辑原则；未确认的硬要求先澄清。此次是规则与上下文优化，没有训练模型，也没有把博主观点、奖项或社交热度变成产品分数。
+- 现有用途等级仍是早期本站编辑判断，尚非逐台实测。正式 AI 继续排除演示报价；当前没有可靠报价候选，不会凑出预算内购买推荐。详见 [推荐维护说明](docs/RECOMMENDATION.md)。
+
+### 已保留的星河界面与设备展示
+
+- 流动星河首页：程序生成的旋臂星尘、柔和星云、光标避让、点击扩散与引力波环；无需下载背景视频。
+- 小派在太空漂浮与挥手，头部随光标转动，点击后向光标短距离飞近；手机拖动、暂停星河与小派、2D 降级及减少动态适配。
+- 真实 DeepSeek 对话：服务端密钥、输入边界、35 秒超时、JSON 校验、候选 ID 审核、持久原子额度。没有替代模型或伪造 AI 回复。
+- 最初24款编辑/演示设备，含20款手机；当前扩充规模见最新参数记录。早期覆盖：苹果从 iPhone X（2017）起的主要代际；小米、三星、OPPO、vivo、荣耀、一加部分主流型号。不是所有颜色、容量、Pro / Max 分支的全量库。
+- 早期24款主图已扩展为426条型号/地区记录的官方远程图；图片失效时明确提示。停售设备标为官方归档，不暗示仍在售。公开发布前须确认品牌素材使用许可，详见 [官方图像说明](docs/OFFICIAL-MEDIA.md)。
+- 放大首页与详情的设备占比；iPhone X 正背面、iPhone 14 / 15 背面共 4 张无遮挡实拍提供去背景补充视图，使用原片轮廓遮罩，不生成补画。平面视差不是 360° 模型。
+- iOS 26 灵感的网页液态玻璃：折射层、透光边缘、随光标移动的高光和弹性按压；导航、按钮和 Radix 菜单统一。Safari / Firefox 使用模糊和高光降级。
 
 ## 本地运行
 
-~~~bash
-unzip digitalpick-source.zip -d source
-cd source
+推荐 Node.js 24 LTS 或更新版本；本机验证 Node.js 26.8.1 / npm 11.19.0。
+
+```bash
 npm ci
 npm run dev
-~~~
+```
 
-推荐Node.js 24 LTS。运行测试：npm test。源码内 README.md 和 docs/FREE-DEPLOYMENT.md 有完整维护说明。
+打开 http://127.0.0.1:3000 。开发服务默认仅绑定本机。当前工作目录已配置忽略的服务端环境文件；源码包不附带任何密钥。
 
-## 免费托管
+其他环境无需配置即可运行基础功能。需要 AI 时复制 `.env.example` 为 `.env.local`，仅在服务端填写 `AI_API_KEY`、随机 `AI_SESSION_SECRET`、`AI_ENABLED=true`；默认模型为 `deepseek-flash`。详见 [AI 接入与额度](docs/AI.md)。
 
-- 前端：GitHub Pages，仓库Settings → Pages选择GitHub Actions。
-- AI：Cloudflare Pages入口经内部绑定连接Worker与SQLite Durable Object；Key只放Worker Secret。
-- 仓库Actions Variable AI_PROXY_URL仅填写已部署的Pages网关公开HTTPS地址。
-- 免费托管额度不包含DeepSeek模型调用费。价格按官网参考、历史发售和二手模型估算分别标注。
-- 不要把任何API Key添加到NEXT_PUBLIC变量或提交到仓库。
+```bash
+npm run typecheck
+npm test
+npm run build
+npm run check:site
+npm start
+```
 
-更新网站：修改本地完整源码，运行测试后重新生成并上传digitalpick-source.zip，Actions会重新发布。不要把本地localhost预览产物直接上传到公网。
+默认生产构建在 `.next/`，通过 Next.js Node 服务运行；免费静态目标另外使用 `npm run build:pages` 生成 `out-pages/`。`npm run preview` 与 `npm start` 相同。默认使用 Webpack。保留在目录中的旧 `out/` 和 legacy 静态归档属于历史版本，请使用新工作流部署。
 
-桌面/手机连接异常时打开 [连接与3D自检](https://max0220-22.github.io/digitalpick/diagnostics/)，仅检查免费会话和本地3D状态，不调用模型。
+## 基础功能
 
-## 正式产品库与清单核验
+- 首页搜索、预算、分类、全新 / 二手入口与知识文章。
+- 产品库关键词 / 中文品牌搜索、分类、品牌筛选、购买方式和年份 / 重量排序。
+- 独立详情页：具体配置、来源、更新时间、优缺点、适合场景、全新与二手建议。
+- 五步规则选购：类型、总预算与预留、购买取舍、用途与主用途、品牌 / 系统 / 容量 / 重量 / 屏幕。
+- 最多 3 款：每项用途须达到 3/5 编辑适配门槛；报价上限加预留不能超预算。缺价、过期、能力未知或必要用途不适配时不凑数。
+- 公开用途 / 预算 / 购买取舍 / 品牌 / 配置分项，保留两种合格购买方案，并解释被排除设备的原因。
+- 官方平台渠道、风险和关键词复制；没有可靠商品直达链接时不生成商品地址。
+- 手机 / 平板 / 电脑验机清单：通过 / 异常 / 未查，关键异常提示、本地持久化、TXT 摘要。
+- 最多三款横向参数对比，8 类 Markdown 知识库，文章搜索与分类。
+- 无登录、支付、用户评论、爬虫、广告追踪或交易流程。
 
-[打开平板产品库](https://max0220-22.github.io/digitalpick/products/?category=tablet) · [清单逐项核验](https://max0220-22.github.io/digitalpick/products/coverage/)
+## 数据边界
 
-产品库492条型号/地区版本：手机339、平板90、笔记本63。用户清单520项逐项核验：446确认、18纠正、56暂未确认；不把未确认名称编成已发布产品。部分记录只核对型号，未整理参数保持为空，不宣称所有字段完整。
+价格展示使用 `data/product-prices.json`，区分官网参考、历史发售、官方建议零售和无市场样本的二手模型估算。缺少可靠依据时不填数值。当前没有经同配置审核、可进入预算推荐的实时报价；历史起价和二手估算不能直接当成今天能买到的价格。
 
-支持品牌、代际、中文型号搜索和分页。缺报价不隐藏设备，新记录没有虚构价格、图片或评分。103项测试、前端/Worker类型检查及静态构建通过；来源与维护说明见源码内docs/CATALOG-EXPANSION.md。
+AI 继续排除演示报价；现有参数检索与对话保持。新收录资料未经用途评分，不编造测评结论。五步问答保留条件与规则解释，没有可靠报价时明确说明，不凑出预算内购买结果。
 
-## Detailed specifications — 2026-10-18
+- 产品参数附官方来源，未知 RAM、相机、电池等字段明确未知；地区版本写在配置和来源中。
+- 优缺点 / 场景为编辑判断，不能当作实机测试。不同来源续航不生成统一排名。
+- 报价有效期 30 天，非法范围、未来 / 无效日期和缺少来源的非演示价格不参与推荐。
+- 添加真实报价须核对同配置、实际采集日期及可靠来源，并设置 `demo: false`，不能直接把示例价格改为真实。
+- 官方图像来源不等于开放许可，本地原型使用品牌公开地址；官方图与有 CC 许可的补充实拍分别标注。详情见 [官方图像](docs/OFFICIAL-MEDIA.md)、[素材清单](docs/ASSETS.md) 与 `/sources/`。照片不作为价格依据。
+- 主题、验机和对比保存在本机浏览器。发送 AI 对话后，最近消息经服务端转交 DeepSeek；本站不保存正文。Node 版使用匿名 Cookie 与本机 SQLite；Worker 版使用内存签名会话、每日 IP 摘要及持久 Durable Object 计数，仅用于额度。
 
-237 product records updated; 1,936 specification fields added and 176 refined. Identity-only records reduced from 169 to 18. Regional variants, Pro+ models and configuration bindings remain distinct. Official source links are included in product details and the AI context. No new prices, images or benchmarks.
+## 项目结构
 
-Validation: 103 tests, frontend/Worker TypeScript, 516 static HTML pages and 20,286 local references; mobile layout checked at 390px. Reports and remaining gaps: docs/SPEC-ENRICHMENT.md and docs/spec-enrichment-report.json inside the source archive.
+```text
+app/                       页面、样式、SEO、来源页
+  api/assistant/           服务端模型接口
+  products/[id]/           设备详情
+  recommend/ checklist/    规则问答、验机
+components/
+  companion/               3D 精灵、聊天、首页与悬浮入口
+  ui/                      Button、Badge、GlassSelect
+  product-gallery.tsx      官方图 / 去背景实拍与视差
+  product-media-image.tsx  图片失败降级、原片轮廓遮罩
+  device-showcase.tsx      首页设备档案
+lib/
+  products.ts              演示资料与完整设备集合
+  catalog-assets.ts        官方参数、摄影作者和许可
+  official-product-media.ts 官方远程图、出处与版权状态
+  product-media.ts          统一图片与原片遮罩映射
+  ai/                      输入/输出验证、上下文、SQLite 额度
+  recommend.ts prices.ts   逐项用途门槛、购买方案与价格规则
+  research.ts              研究来源、访问范围与编辑原则
+  deployment.ts            公开代理地址、仓库路径与本地资源前缀
+content/articles/          Markdown 原创示例文章
+public/products/           带许可的 WebP 图像
+worker/                    Web API 代理、签名与持久事务额度
+wrangler.toml              Worker 正式配置（无密钥）
+.github/workflows/pages.yml GitHub Pages 自动构建与发布
+scripts/*pages.mjs         静态构建、路径检查与本地预览
+scripts/check-site.mjs     Node 生产构建页面链接检查
+tests/                     规则、AI 边界、额度与精灵状态
+```
 
-## 官方产品图片 — 2026-10-19
+## 验证
 
-新增402条设备的官方主图，共覆盖426/492条型号及地区版本：手机307、平板75、笔记本44。产品卡片、详情页与参数素材库均展示图片及原始出处。剔除促销横幅、过小导航图、线框图和型号不符图片；其余66条保留明确占位。图片通过品牌官方CDN远程引用，品牌保留版权，不在源码包内再分发。
+当前官方图片版本：前端与Worker TypeScript、105项行为测试通过；GitHub Pages构建生成516个HTML、检查21609条本地引用。390px手机详情页与参数库无横向溢出，官方图片正常加载。来源、缺失字段与清单状态见 [产品库扩充记录](docs/CATALOG-EXPANSION.md)。本轮未调用付费模型；Node全栈构建与Docker没有在此轮重新验收。
 
-验证：105项测试、前端与Worker类型检查、516个静态HTML与21609条本地引用全部通过；390px手机布局及图片加载检查通过。来源、图片尺寸和完整缺口见源码内docs/MEDIA-EXPANSION.md、docs/official-media-report.json。本轮未调用付费模型。
+## 部署与维护
 
-## 价格来源与二手估算 — 2026-10-19
+优先使用 [免费部署步骤](docs/FREE-DEPLOYMENT.md)：GitHub Pages + Worker，已完成 SQLite Durable Object 适配。[部署说明](DEPLOYMENT.md) 同时保留 Node 单机与 Docker 路线。Node 版仍需要单主机持久 SQLite 文件，不能放进临时 Serverless 文件系统。已部署GitHub Pages + Cloudflare Worker，经Pages网关连接；记录见 docs/GITHUB-LIVE.md。Docker 镜像未在本机运行验证。
 
-266/492条型号与地区记录至少有一种已核对价格信息：74条官网参考、152条发售参考、65条官方建议零售价，部分重叠。另有135条低置信度折旧模型情景估算，没有平台成交样本；不代表市场报价。226条没有足够依据填入数字，保持为空，未宣称全部价格已补齐。
+修改 `lib/products.ts`、`lib/catalog-assets.ts` 与 Markdown 后重新构建。正文不执行原始 HTML。渠道链接有 HTTPS 白名单；无赞助或佣金。如未来存在合作，应逐项披露。
 
-在售状态、地区、基础配置、来源和核对日期分别展示；当前官网起价不自动当作同配置可购买报价，历史价、建议价和估算不用于硬预算推荐或真实差价。公开产品已移除早期演示数字，合成报价只存在测试夹具。
+[验证记录](docs/VERIFICATION.md) · [推荐维护说明](docs/RECOMMENDATION.md) · [小派实现](docs/COMPANION.md) · [AI 说明](docs/AI.md) · [UI 参考与许可](docs/UI-REFERENCES.md)
 
-[查看价格方法与覆盖](https://max0220-22.github.io/digitalpick/pricing/) · [官网价格与发售价示例](https://max0220-22.github.io/digitalpick/products/ipad-air-11-m4/) · [旧款与二手估算示例](https://max0220-22.github.io/digitalpick/products/iphone-13/)
+后续优先补齐可信价格与更多官方核验参数，再完善专门评测、按需防刷验证、内容编辑和价格历史；保留当前无登录即可试用的体验。
 
-验证：112项测试、前端/Worker类型检查、517个静态HTML、23321条本地引用，390px手机排版检查通过。来源、计算方法和逐项缺口见源码内docs/PRICE-RESEARCH.md与docs/price-research-report.json。本轮未调用付费模型。
+## 参数素材库与短提示理解（2026-10-17）
 
-## 编码、图片过渡与小派参考推荐 — 2026-10-19
+早期新增 `/library/`，最初37条官方字段资料与1,775条待核验配置分开展示；后者不进入AI事实和预算推荐。支持中文型号、对比后短答和明确中文/k预算。仍使用deepseek-flash，未训练模型权重，未新增图片。来源、许可、覆盖缺口与维护说明见 [docs/DEVICE-LIBRARY.md](docs/DEVICE-LIBRARY.md)。离线导入：`python3 scripts/import-device-library.py`，构建无需联网或付费数据API。
 
-保留已确认的缺图占位文案。“暂未估算”采用完整Unicode常量，增加REDMI Book 16 2026（125H/1860g）卡片回归；源码和静态输出严格检查UTF-8、BOM与意外替换字符。修改前在Safari未复现该卡片乱码，没有把猜测写成已确认根因。
+## 正式产品库扩充（2026-10-17）
 
-图片保留懒加载与原失败处理，新增骨架与模糊渐显；首页机型、分类、详情视图、素材库标签及下一页支持意图预加载，每次最多3图、总计32个地址去重，省流量及2G关闭预加载。
-
-小派先给有来源的“核价备选”，明确非实时价格、购买前核实，再追问用途或全新/二手。参考池不等于通过当前购买报价审核，预算资格仍为false，不保证库存或预算内可买。虚构金额、未知ID与库存承诺仍被拦截，不改动硬预算规则推荐器。
-
-验证：120项离线测试、前端/Worker类型检查、517个静态HTML、23321条本地引用及2637份导出文本编码检查。手机390px验证图片先骨架后就绪，lazy属性保留。细节见源码内docs/UX-IMPROVEMENTS.md。
-
-预算复述与校验：允许在句首或句中复述带明确“预算”标签、金额与用户条件一致的预算，继续拒绝商品售价或不同金额。降级返回固定原因码，不记录或透传模型原文。首轮真实AI推荐通过；第二轮校验后本地接续，未视为两轮纯AI均通过。2次已授权验收已用完，后续补丁只做离线回归。
+2026-10-17首次扩充为490条型号/地区版本：339手机、90平板、61笔记本。按用户清单逐项核验520项（445确认、18纠正、57未确认），结果见 `/products/coverage/`。缺报价不会隐藏产品；未读到的参数保持空值，不伪造完整规格。详情、数据维护及验证范围见 [CATALOG-EXPANSION.md](docs/CATALOG-EXPANSION.md)。
 
 ## FAQ、新人路径、收藏与清单分享 — 2026-10-19
 
@@ -90,9 +177,11 @@ Validation: 103 tests, frontend/Worker TypeScript, 516 static HTML pages and 20,
 138项测试、前端/Worker类型检查、520个静态HTML、24462条本地引用与2652份导出文本编码检查通过。已实际走完手机10000、手机3000、平板10000学习笔记、手机500四组问卷，验证估算标签、超预算差额、未入选原因和复制；390px深浅色无横向溢出。只有7款已有用途评级，其他型号不补造分数；无来源或配置无法确认仍可能为空。未调用付费AI或修改代理。详细说明见源码内 `docs/QUESTIONNAIRE-PRICE-FIX.md`。
 
 
-## 下单确认区文案修复 — 2026-10-20
+## 结果确认区文案与可读性修复 — 2026-10-20
 
-预算、实测范围及续航说明改为清晰完整的静态句子，每句一个文本节点，增大字号并使用实色阅读底板。142项测试及静态构建通过；500元场景三次刷新、动画后和深浅色切换后的DOM逐字一致，390px无横向溢出。修改前DOM未复现字序扰动，排查证据和验证边界保留于源码内 `docs/QUESTIONNAIRE-PRICE-FIX.md`。
+修正“下单前，还要确认”的预算、实测范围与续航三句文案，整句静态渲染，扩大字号并增加实色阅读底板。新增逐字、50次重复渲染与分支回归检查。修改前实际DOM与源码一致，未复现报告中的字序扰动；排查证据与验证边界见 `docs/QUESTIONNAIRE-PRICE-FIX.md`，不将推测的显示原因当成已证实根因。
+
+本轮142项测试、前端/Worker类型检查及静态构建通过；三轮浏览器刷新、动画运行后及390px深浅色文字核对通过。
 
 
 ## 同景日出主题 — 2026-10-20
@@ -108,10 +197,27 @@ Validation: 103 tests, frontend/Worker TypeScript, 516 static HTML pages and 20,
 
 155 项测试、类型检查、520 页静态导出及 2654 份导出文本编码检查通过。浏览器验证四轮往返、模型不重建、390px 布局、2D 反馈、主题刷新保存和路由返回。所有持续氛围动画使用 rAF；不可见/减少动态时暂停。本机性能观察不代表所有设备的帧率保证。实现与验证边界见 `docs/DAY-NIGHT.md`。
 
-## 本轮更新
-
-品牌升级为未域 ELVORA；太阳实体圆盘、日夜同步过渡、完整 Hero 星河；问卷和小派推荐新增单闲鱼核价入口。既有网址与部署配置保持不变。
+## 未域的品牌理念
 
 未域相信，每个人都值得一台“刚好适合”的设备，而不是一台“别人说好”的设备。
 
-Not the priciest. Just the right one.
+不买最贵的，只买最适合的。Not the priciest. Just the right one.
+
+显示品牌已更新；既有 GitHub Pages 路径、Worker 地址、环境变量名称和本地存储键保持兼容，不代表已购买新域名。
+
+## 未域统一修订 — 2026-10-21
+
+本节替换上方历史版本的主题编排说明：日夜天空、光照与玻璃界面共用同一 1.6 秒进度，取消错峰与灰蓝罩层；太阳采用独立 SVG 圆盘，星河覆盖整个 Hero 并保留底部 120px 渐隐。主标题按语义断行。
+
+问卷结果与小派结构化推荐共用 `buildSecondhandLink(brand, model, storage)`，只生成闲鱼搜索入口，标注“实时价格以平台页面为准”，不抓取或承诺平台报价。已移除转转入口。
+
+158 项测试、静态构建、520 页和 26022 个本地引用检查通过；源码与导出文件均通过 UTF-8 无 BOM 检查。本轮不调用付费 AI。
+
+
+### 访客体验修复（2026-10-26）
+
+首页以“开始选购”为主入口，聊天为次入口；桌面 3D 舞台缩小，窄屏隐藏。核价三步与闲鱼关键词一致，保留估算/非实时价格声明。
+
+本地整理顶部区分当日额度耗尽、模型失败和其他不可用原因；预算和用途已知时输出产品库中的1—3款核价备选，未给设备类型时明确说明暂按手机方向，允许纠正。问候不消耗模型额度，刷新不计模型调用，同一请求ID重投不重复预留或付费。
+
+公开配额保持线上数值：每日30次，会话每日10次、每分钟3次；数值由维护者在 Wrangler 环境变量填写。分段耗时日志不含问答正文，额度已用/上限仅在显式开启的 localhost 开发模式可见。详见 [部署说明](DEPLOYMENT.md#访客体验与维护者验收)。真机验收待补，小屏浏览器回归不能替代真实手机性能与触控测试。
